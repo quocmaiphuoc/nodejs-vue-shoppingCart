@@ -7,7 +7,11 @@ const { Product,
     getBestProduct,
     getTopProduct, 
     getProductCategories,
-    getProductByCategories } = require('../database/models/product')
+    getProductByCategories,
+    getDetailProduct,
+    updateProduct,
+    deleteProduct
+ } = require('../database/models/product')
 
 router.route('/products').post(async(req,res)=>{
     let {productName,productDescription,productCategory,productPrice,productImage,productSeller,productRating} = req.body
@@ -85,7 +89,73 @@ router.route('/product/productCategories').get(async(req,res)=>{
             data: products
         })
     } catch (error) {
-        throw error
+        res.json({
+            result: 'failed',
+            message: ` Không thể lấy được thông tin. Error: ${error}`
+        })
+    }
+})
+
+router.route('/product/productsByCategory').get(async(req,res)=>{
+    try {
+        let caterogy = req.query['caterogy']
+        let products = await getProductByCategories(caterogy)
+        res.json({
+            result: 'ok',
+            message: 'Query thành công',
+            data: products
+        })
+    } catch (error) {
+        res.json({
+            result: 'failed',
+            message: ` Không thể lấy được thông tin. Error: ${error}`
+        })
+    }
+})
+router.route('/product/:product_id').get(async(req,res)=>{
+    try {
+        let {product_id} = req.params
+        let product = await getDetailProduct(product_id)
+        res.json({
+            result: 'ok',
+            message: 'Lấy thành công',
+            data: product
+        })
+        } catch (error) {
+            res.json({
+                result: 'failed',
+                message: ` Không thể lấy được thông tin. Error: ${error}`
+            })
+        }
+}).put(async(req,res)=>{
+    try {
+        let {product_id} = req.params
+        let {productName,productDescription,productCategory,productPrice,productImage,productSeller,productRating} = req.body
+        let product = await updateProduct(product_id,productName,productDescription,productCategory,productPrice,productImage,productSeller,productRating)
+        res.json({
+            result: 'ok',
+            message: 'Lấy thành công',
+            data: product
+        })
+    } catch (error) {
+        res.json({
+            result: 'failed',
+            message: ` Không thể lấy được thông tin. Error: ${error}`
+        })
+    }
+}).delete(async(req,res)=>{
+    try {
+        let {id} = req.body
+        await deleteProduct(id)
+        res.json({
+            result: 'ok',
+            message: 'Lấy thành công'
+        })
+    } catch (error) {
+        res.json({
+            result: 'failed',
+            message: ` Không thể lấy được thông tin. Error: ${error}`
+        })
     }
 })
 

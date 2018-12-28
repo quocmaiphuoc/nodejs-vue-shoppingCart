@@ -63,12 +63,53 @@ const getProductCategories = async()=>{
 
 const getProductByCategories = async(productCategory)=>{
     try {
-        let product= await Product.find({productCategory})
+        let product= await Product.find({productCategory: productCategory})
     return product
     } catch (error) {
         throw product
     }
     
+}
+
+const getDetailProduct= async(prouducId)=>{
+    try {
+        let product = await Product.findById({_id : prouducId})
+        return product
+    } catch (error) {
+        throw error
+    }
+}
+
+const updateProduct = async(productId,productName,productDescription,productCategory,productPrice,productImage,productSeller,productRating)=>{
+    try {
+        let product = await Product.findById(productId)
+        if(!product){
+            throw `Ko tìm thấy product: ${product}`
+        }
+        product.productName = productName
+        product.productDescription = productDescription
+        product.productCategory = productCategory
+        product.productPrice = productPrice
+        product.productImage = productImage
+        product.productSeller = productSeller
+        product.productRating = productRating
+        await product.save()
+        return product
+    } catch (error) {
+        throw error
+    }
+}
+
+const deleteProduct = async(productId)=>{
+    try {
+        let product = await Product.findById(productId)
+        if(!product){
+            throw `Ko tìm thấy product: ${product}`
+        }
+        await Product.deleteOne({_id : productId})
+    } catch (error) {
+        throw error
+    }
 }
 
 module.exports = {
@@ -78,5 +119,8 @@ module.exports = {
     getBestProduct,
     getTopProduct,
     getProductCategories,
-    getProductByCategories
+    getProductByCategories,
+    getDetailProduct,
+    updateProduct,
+    deleteProduct
 }

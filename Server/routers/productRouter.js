@@ -118,7 +118,7 @@ router.route('/product/:product_id').get(async(req,res)=>{
         let product = await getDetailProduct(product_id)
         res.json({
             result: 'ok',
-            message: 'Lấy thành công',
+            message: 'Lấy thông tin product thành công',
             data: product
         })
         } catch (error) {
@@ -134,7 +134,7 @@ router.route('/product/:product_id').get(async(req,res)=>{
         let product = await updateProduct(product_id,productName,productDescription,productCategory,productPrice,productImage,productSeller,productRating)
         res.json({
             result: 'ok',
-            message: 'Lấy thành công',
+            message: 'Cập nhật thành công',
             data: product
         })
     } catch (error) {
@@ -149,7 +149,7 @@ router.route('/product/:product_id').get(async(req,res)=>{
         await deleteProduct(id)
         res.json({
             result: 'ok',
-            message: 'Lấy thành công'
+            message: 'Xóa thành công'
         })
     } catch (error) {
         res.json({

@@ -14,15 +14,19 @@ const ProductSchema = new Schema({
 const Product = mongoose.model('product', ProductSchema)
 
 const insertProduct = async(productName,productDescription,productCategory,productPrice,productImage,productSeller,productRating)=>{
-    const newProduct = new Product()
-    newProduct.productName = productName
-    newProduct.productDescription=productDescription
-    newProduct.productCategory=productCategory
-    newProduct.productPrice=productPrice
-    newProduct.productImage=productImage
-    newProduct.productSeller=productSeller
-    newProduct.productRating=productRating
-    await newProduct.save()
+    try {
+        const newProduct = new Product()
+        newProduct.productName = productName
+        newProduct.productDescription=productDescription
+        newProduct.productCategory=productCategory
+        newProduct.productPrice=productPrice
+        newProduct.productImage=productImage
+        newProduct.productSeller=productSeller
+        newProduct.productRating=productRating
+        await newProduct.save()
+    } catch (error) {
+        throw error
+    }
 }
 
 const getAllProduct = async()=>{

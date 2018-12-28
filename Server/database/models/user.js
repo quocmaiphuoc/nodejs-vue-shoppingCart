@@ -53,9 +53,11 @@ const updateUser = async(id, firstName, lastName, password, email, isAdmin)=>{
         if(!user){
             throw `ko tìm thấy user`
         }
+        if(user.lastName != lastName || user.firstName != firstName){
+            user.fullName = firstName + " " + lastName
+        }
         user.firstName = firstName
         user.lastName = lastName
-        user.fullName = firstName + " " + lastName
         user.password = password
         user.email = email
         user.isAdmin = isAdmin

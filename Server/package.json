@@ -9,8 +9,10 @@
   "author": "quocmp",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "3.0.0",
     "body-parser": "^1.18.3",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.0",
     "nodemon": "^1.18.9"
   }

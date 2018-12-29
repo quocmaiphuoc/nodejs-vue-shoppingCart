@@ -1,26 +1,38 @@
 const express = require('express')
 const router = express.Router()
 
-const {User} = require('../database/models/user')
+const {User,loginUser,verifyJWT} = require('../database/models/user')
 
-router.route('/login').get(async(req,res)=>{
+router.route('/login').post(async(req,res)=>{
     let {email,password} = req.body
-    User.find({
-        email: email,
-        password: password
-    },(err,user)=>{
-        if(err){
-            res.send(err)
-        }
-
-        if(user.lenght ===0){
-            res.send(401).json({
-                status: 401,
-                message: 'Unknow'
-            })
-        }else {
-            res.json(user)
-        }
-    })
+    try {
+        let token = await loginUser(email,password)
+        res.json({
+            result: 'ok',
+            message: 'Dang nhap thành công',
+            token
+        })
+    } catch (error) {
+        res.json({
+            result: 'failed',
+            message: 'Ko thành công'
+        })
+    }
 })
+router.route('/jwtTest').get(async(req,res)=>{
+    let token = req.headers['x-access-token']
+    try {
+        await verifyJWT(token)
+        res.json({
+            result: 'ok',
+            message: 'veryfi thành công'
+        })
+    } catch (error) {
+        res.json({
+            result: 'failed',
+            message: 'lỗi'
+        })
+    }
+})
+
 module.exports = router
